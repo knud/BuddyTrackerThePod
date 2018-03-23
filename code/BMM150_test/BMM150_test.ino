@@ -4,6 +4,8 @@
 
 int8_t set_sensor_settings(struct bmm150_dev *dev);
 int8_t read_sensor_data(struct bmm150_dev *dev);
+bmm150_com_fptr_t user_i2c_read();
+bmm150_com_fptr_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len);
 
 
 struct bmm150_dev dev;
@@ -21,10 +23,10 @@ void setup() {
     //dev.read = user_i2c_read;
     //dev.write = user_i2c_write;
     //dev.delay_ms = user_delay_ms;
+    dev.read = &user_i2c_read;
+    dev.write = &user_i2c_write;
+    dev.delay_ms = &delay;
     //dev.read = &TwoWire::read;
-    dev.read = &read_sensor_data;
-    dev.write = &TwoWire::write;
-    dev.delay_ms = 100;
 
     rslt = bmm150_init(&dev);
 
@@ -36,6 +38,16 @@ void loop() {
     // put your main code here, to run repeatedly:
     read_sensor_data(&dev);
     delay(1000);
+}
+
+
+bmm150_com_fptr_t user_i2c_read(){
+    return BMM150_OK;
+}
+
+
+bmm150_com_fptr_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
+    return BMM150_OK;
 }
 
 
