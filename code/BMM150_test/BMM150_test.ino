@@ -4,8 +4,8 @@
 
 int8_t set_sensor_settings(struct bmm150_dev *dev);
 int8_t read_sensor_data(struct bmm150_dev *dev);
-bmm150_com_fptr_t user_i2c_read();
-bmm150_com_fptr_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len);
+int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len);
+int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *write_data, uint16_t len);
 
 
 struct bmm150_dev dev;
@@ -26,7 +26,6 @@ void setup() {
     dev.read = &user_i2c_read;
     dev.write = &user_i2c_write;
     dev.delay_ms = &delay;
-    //dev.read = &TwoWire::read;
 
     rslt = bmm150_init(&dev);
 
@@ -41,12 +40,23 @@ void loop() {
 }
 
 
-bmm150_com_fptr_t user_i2c_read(){
+//bmm150_com_fptr_t user_i2c_read(){
+int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
+    Wire.requestFrom(dev_id, len);
+    for(uint8_t i = 0; i < len; i++){
+        if(!Wire.available())
+            return -1;
+        *read_data = Wire.read();
+        read_data++;
+    }
     return BMM150_OK;
 }
 
 
-bmm150_com_fptr_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
+int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *write_data, uint16_t len){
+    Wire.beginTransmission(dev_id);
+    Wire.write(write_data, len);
+    Wire.endTransmission();
     return BMM150_OK;
 }
 
