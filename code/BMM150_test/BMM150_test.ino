@@ -19,7 +19,7 @@ void setup() {
     Wire.begin();
 
     /* Sensor interface over I2C */
-    dev.dev_id = BMM150_DEFAULT_I2C_ADDRESS;
+    dev.dev_id = BMM150_I2C_ADDRESS_CSB_HIGH_SDO_HIGH;
     dev.intf = BMM150_I2C_INTF;
     //dev.read = user_i2c_read;
     //dev.write = user_i2c_write;
