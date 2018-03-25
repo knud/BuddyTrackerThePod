@@ -4,8 +4,9 @@
 
 int8_t set_sensor_settings(struct bmm150_dev *dev);
 int8_t read_sensor_data(struct bmm150_dev *dev);
-int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len);
-int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *write_data, uint16_t len);
+int8_t user_i2c_read(uint8_t devId, uint8_t regAddr, uint8_t *regData, uint16_t len);
+int8_t user_i2c_write(uint8_t devId, uint8_t regAddr, uint8_t *regData, uint16_t len);
+void delay_ms(uint32_t period);
 
 
 struct bmm150_dev dev;
@@ -25,7 +26,7 @@ void setup() {
     //dev.delay_ms = user_delay_ms;
     dev.read = &user_i2c_read;
     dev.write = &user_i2c_write;
-    dev.delay_ms = &delay;
+    dev.delay_ms = &delay_ms;
 
     rslt = bmm150_init(&dev);
 
@@ -40,7 +41,7 @@ void loop() {
 }
 
 
-//bmm150_com_fptr_t user_i2c_read(){
+/*//bmm150_com_fptr_t user_i2c_read(){
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
     Wire.requestFrom(dev_id, len);
     for(uint8_t i = 0; i < len; i++){
@@ -58,6 +59,67 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *write_data, uin
     Wire.write(write_data, len);
     Wire.endTransmission();
     return BMM150_OK;
+}*/
+
+
+// https://gist.github.com/BoschSensortec/cdaa6aa244335388d914de7f59443860
+
+
+/**
+* @brief Task that delays for a ms period of time
+* @param period    : Period of time in ms
+*/
+void delay_ms(uint32_t period){
+    // Wait for a period amount of ms
+    // The system may simply idle, sleep or even perform background tasks
+    delay(period);
+}
+
+
+/**
+* @brief Callback function for reading registers over I2C
+* @param devId        : Library agnostic parameter to identify the device to communicate with
+* @param regAddr    : Register address
+* @param regData    : Pointer to the array containing the data to be read
+* @param length : Length of the array of data
+* @return   Zero for success, non-zero otherwise
+*/
+int8_t user_i2c_read(uint8_t devId, uint8_t regAddr, uint8_t *regData, uint16_t len){
+    uint16_t i;
+    int8_t rslt = 0;
+
+    Wire.beginTransmission(devId);
+    Wire.write(regAddr);
+    rslt = Wire.endTransmission();
+    
+    Wire.requestFrom((int) devId, (int) len);
+    for (i = 0; (i < len) && Wire.available(); i++) {
+        regData[i] = Wire.read();
+    }
+
+    return rslt;
+}
+
+/**
+* @brief Callback function for writing registers over I2C
+* @param devId      : Library agnostic parameter to identify the device to communicate with
+* @param regAddr    : Register address
+* @param regData    : Pointer to the array containing the data to be written
+* @param length : Length of the array of data
+* @return   Zero for success, non-zero otherwise
+*/
+int8_t user_i2c_write(uint8_t devId, uint8_t regAddr, uint8_t *regData, uint16_t len){
+    uint16_t i;
+    int8_t rslt = 0;
+
+    Wire.beginTransmission(devId);
+    Wire.write(regAddr);
+    for (i = 0; i < len; i++) {
+        Wire.write(regData[i]);
+    }
+    rslt = Wire.endTransmission();
+
+    return rslt;
 }
 
 
@@ -88,7 +150,6 @@ int8_t read_sensor_data(struct bmm150_dev *dev){
     Serial.println("\nMagnetometer data");
     //String outputString = "MAG X : " + dev->data.x + " \t MAG Y : " + dev->data.y + " \t MAG Z : " + dev->data.z;
     String outputString = "MAG X : ";
-    outputString = outputString + "MAG X : ";
     outputString = outputString + dev->data.x;
     outputString = outputString + " \t MAG Y : ";
     outputString = outputString + dev->data.y;
