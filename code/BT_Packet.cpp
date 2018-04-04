@@ -10,11 +10,11 @@ void BT_Packet::setGPS(uint8_t lat, uint8_t lng){
     updatePending = true;
 }
 
-bool updatesPending(){
+bool BT_Packet::updatesPending(){
     return updatePending;
 }
 
-uint32_t getPacket(){
+uint32_t BT_Packet::getPacket(){
     uint32_t packet;
     packet = UUID << (4 * 8);
     packet &= lat << (2 * 8);

@@ -2,7 +2,7 @@
 #define BT_PACKET_H
 
 
-class Dash {
+class BT_Packet {
     public:
         void setGPS(uint8_t lat, uint8_t lng);
         bool updatesPending();
