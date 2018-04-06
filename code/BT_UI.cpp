@@ -61,6 +61,7 @@ uint8_t BT_UI::orientation2LED(float orientation){
         offsetOrientation -= 360;
     }
     if(offsetOrientation > fov){
+        //TODO: what happens when this is returned?
         return -1;
     }
 
