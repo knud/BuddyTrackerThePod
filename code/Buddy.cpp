@@ -1,15 +1,16 @@
+#include <Arduino.h>
 #include "Buddy.h"
 
-Buddy::Buddy();
+Buddy::Buddy(void);
 
-uint16_t Buddy::getUUID(){
+uint16_t Buddy::getUUID(void){
     return UUID;
 }
 
-uint8_t Buddy::getLat(){
+uint8_t Buddy::getLat(void){
     return lat;
 }
 
-uint8_t Buddy::getLng(){
+uint8_t Buddy::getLng(void){
     return lng;
 }

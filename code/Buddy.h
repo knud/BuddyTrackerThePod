@@ -4,9 +4,11 @@
 
 class Buddy {
     public:
-        uint16_t getUUID();
-        uint8_t getLat();
-        uint8_t getLng();
+        Buddy(void);
+        
+        uint16_t getUUID(void);
+        uint8_t getLat(void);
+        uint8_t getLng(void);
     private:
         uint16_t UUID;
         uint8_t lat;
