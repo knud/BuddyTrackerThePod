@@ -67,6 +67,8 @@
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10586.0/ucrt",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10586.0/shared",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10586.0/winrt",
+                    "C:/Users/fdrury/Documents/ArduinoData/packages/arduino/hardware/samd/1.6.18/cores/arduino",
+                    "C:/Users/fdrury/Documents/Arduino/libraries",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,

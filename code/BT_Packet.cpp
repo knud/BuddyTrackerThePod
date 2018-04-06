@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "BT_Packet.h"
 
 BT_Packet::BT_Packet(){

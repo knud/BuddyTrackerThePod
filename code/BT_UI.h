@@ -24,6 +24,7 @@ class BT_UI {
         uint8_t stripPin;
         uint32_t buddyColor;
         uint32_t waypointColor;
+        uint8_t fov;
 };
 
 #endif

@@ -7,6 +7,8 @@ BT_UI::BT_UI(uint8_t pin){
     
     buddyColor = strip.Color(LED_OFF, LED_OFF, LED_ON);
     waypointColor = strip.Color(LED_ON, LED_OFF, LED_OFF);
+
+    fov = 180;
 }
 
 void BT_UI::begin(void){
@@ -49,4 +51,18 @@ void BT_UI::setBuddyLight(uint8_t light){
 
 void BT_UI::setWaypointLight(uint8_t light){
     strip.setPixelColor(light, waypointColor);
+}
+
+uint8_t BT_UI::orientation2LED(float orientation){
+    uint8_t degreesPerLED = fov / STRIP_LENGTH;
+    uint8_t offsetOrientation = orientation + fov / 2;
+
+    if(offsetOrientation > 360){
+        offsetOrientation -= 360;
+    }
+    if(offsetOrientation > fov){
+        return -1;
+    }
+
+    return STRIP_LENGTH - offsetOrientation / degreesPerLED;
 }
