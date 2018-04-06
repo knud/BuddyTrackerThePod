@@ -1,6 +1,6 @@
 #include <Arduino.h>
-//#include "BT_Packet.h"
-//#include "Buddy.h"
+#include "BT_Packet.h"
+#include "Buddy.h"
 #include <SPI.h>
 #include <LoRa.h>
 
