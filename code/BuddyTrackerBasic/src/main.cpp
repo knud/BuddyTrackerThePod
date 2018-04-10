@@ -1,12 +1,11 @@
 #include <Arduino.h>
+#include <LinkedList.h>
 #include <LoRa.h>
 #include <SPI.h>
 #include "BT_Packet.h"
 #include "Buddy.h"
 
-// unordered map is a pain.
-// Instead, store Buddy objects in an array and
-// have a way to iterate through and locate them.
+LinkedList<Buddy> buddies = LinkedList<Buddy>();
 
 void setup() {
     Serial.begin(9600);
