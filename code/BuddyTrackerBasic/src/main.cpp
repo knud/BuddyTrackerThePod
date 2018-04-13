@@ -34,38 +34,37 @@ void loop() {
 void onReceive(int packetSize) {
   if (packetSize == 0) return;          // if there's no packet, return
 
-  uint16_t UUID = LoRa.read();
-  
-  // read packet header bytes:
-  int recipient = LoRa.read();          // recipient address
-  byte sender = LoRa.read();            // sender address
-  byte incomingMsgId = LoRa.read();     // incoming msg ID
-  byte incomingLength = LoRa.read();    // incoming msg length
-
-  String incoming = "";
-
   while (LoRa.available()) {
-    incoming += (char)LoRa.read();
-  }
+    // read UUID
+    uint16_t UUID = 0;
+    UUID |= LoRa.read() << (0 * 8);
+    UUID |= LoRa.read() << (1 * 8);
+    UUID |= LoRa.read() << (2 * 8);
+    UUID |= LoRa.read() << (3 * 8);
+    UUID |= LoRa.read() << (4 * 8);
+    UUID |= LoRa.read() << (5 * 8);
+    UUID |= LoRa.read() << (6 * 8);
+    UUID |= LoRa.read() << (7 * 8);
+    UUID |= LoRa.read() << (8 * 8);
+    UUID |= LoRa.read() << (9 * 8);
+    UUID |= LoRa.read() << (10 * 8);
+    UUID |= LoRa.read() << (11 * 8);
+    UUID |= LoRa.read() << (12 * 8);
+    UUID |= LoRa.read() << (13 * 8);
+    UUID |= LoRa.read() << (14 * 8);
+    UUID |= LoRa.read() << (15 * 8);
 
-  if (incomingLength != incoming.length()) {   // check length for error
-    Serial.println("error: message length does not match length");
-    return;                             // skip rest of function
-  }
+    // read partial lat
+    uint8_t lat_partial = 0;
+    lat_partial |= LoRa.read() << (0 * 8);
+    lat_partial |= LoRa.read() << (1 * 8);
 
-  // if the recipient isn't this device or broadcast,
-  if (recipient != localAddress && recipient != 0xFF) {
-    Serial.println("This message is not for me.");
-    return;                             // skip rest of function
-  }
+    // read partial lat
+    uint8_t lng_partial = 0;
+    lng_partial |= LoRa.read() << (0 * 8);
+    lng_partial |= LoRa.read() << (1 * 8);
 
-  // if message is for this device, or broadcast, print details:
-  Serial.println("Received from: 0x" + String(sender, HEX));
-  Serial.println("Sent to: 0x" + String(recipient, HEX));
-  Serial.println("Message ID: " + String(incomingMsgId));
-  Serial.println("Message length: " + String(incomingLength));
-  Serial.println("Message: " + incoming);
-  Serial.println("RSSI: " + String(LoRa.packetRssi()));
-  Serial.println("Snr: " + String(LoRa.packetSnr()));
-  Serial.println();
+    // save data
+
+  }
 }
