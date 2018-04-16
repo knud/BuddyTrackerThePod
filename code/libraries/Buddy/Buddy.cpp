@@ -7,10 +7,10 @@ uint16_t Buddy::getUUID(void){
     return UUID;
 }
 
-uint8_t Buddy::getLat(void){
+uint32_t Buddy::getLat(void){
     return lat;
 }
 
-uint8_t Buddy::getLng(void){
+uint32_t Buddy::getLng(void){
     return lng;
 }

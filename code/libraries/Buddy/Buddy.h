@@ -7,12 +7,12 @@ class Buddy {
         Buddy(void);
         
         uint16_t getUUID(void);
-        uint8_t getLat(void);
-        uint8_t getLng(void);
+        uint32_t getLat(void);
+        uint32_t getLng(void);
     private:
         uint16_t UUID;
-        uint8_t lat;
-        uint8_t lng;
+        uint32_t lat;
+        uint32_t lng;
 };
 
 

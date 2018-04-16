@@ -6,7 +6,11 @@
 #include "Buddy.h"
 
 
+// TODO: define comparator for sorting LinkedList
 LinkedList<Buddy> buddies;
+
+uint32_t myLat = -9999;
+uint32_t myLat = -9999;
 
 
 void setup() {
@@ -32,39 +36,51 @@ void loop() {
 
 
 void onReceive(int packetSize) {
-  if (packetSize == 0) return;          // if there's no packet, return
+    if (packetSize == 0) return; // if there's no packet, return
 
-  while (LoRa.available()) {
-    // read UUID
-    uint16_t UUID = 0;
-    UUID |= LoRa.read() << (0 * 8);
-    UUID |= LoRa.read() << (1 * 8);
-    UUID |= LoRa.read() << (2 * 8);
-    UUID |= LoRa.read() << (3 * 8);
-    UUID |= LoRa.read() << (4 * 8);
-    UUID |= LoRa.read() << (5 * 8);
-    UUID |= LoRa.read() << (6 * 8);
-    UUID |= LoRa.read() << (7 * 8);
-    UUID |= LoRa.read() << (8 * 8);
-    UUID |= LoRa.read() << (9 * 8);
-    UUID |= LoRa.read() << (10 * 8);
-    UUID |= LoRa.read() << (11 * 8);
-    UUID |= LoRa.read() << (12 * 8);
-    UUID |= LoRa.read() << (13 * 8);
-    UUID |= LoRa.read() << (14 * 8);
-    UUID |= LoRa.read() << (15 * 8);
+    while (LoRa.available()) {
+        // read UUID
+        uint16_t UUID = 0;
+        UUID |= LoRa.read() << (0 * 8);
+        UUID |= LoRa.read() << (1 * 8);
+        UUID |= LoRa.read() << (2 * 8);
+        UUID |= LoRa.read() << (3 * 8);
+        UUID |= LoRa.read() << (4 * 8);
+        UUID |= LoRa.read() << (5 * 8);
+        UUID |= LoRa.read() << (6 * 8);
+        UUID |= LoRa.read() << (7 * 8);
+        UUID |= LoRa.read() << (8 * 8);
+        UUID |= LoRa.read() << (9 * 8);
+        UUID |= LoRa.read() << (10 * 8);
+        UUID |= LoRa.read() << (11 * 8);
+        UUID |= LoRa.read() << (12 * 8);
+        UUID |= LoRa.read() << (13 * 8);
+        UUID |= LoRa.read() << (14 * 8);
+        UUID |= LoRa.read() << (15 * 8);
 
-    // read partial lat
-    uint8_t lat_partial = 0;
-    lat_partial |= LoRa.read() << (0 * 8);
-    lat_partial |= LoRa.read() << (1 * 8);
+        // read partial lat
+        uint8_t lat_partial = 0;
+        lat_partial |= LoRa.read() << (0 * 8);
+        lat_partial |= LoRa.read() << (1 * 8);
 
-    // read partial lat
-    uint8_t lng_partial = 0;
-    lng_partial |= LoRa.read() << (0 * 8);
-    lng_partial |= LoRa.read() << (1 * 8);
+        // read partial lat
+        uint8_t lng_partial = 0;
+        lng_partial |= LoRa.read() << (0 * 8);
+        lng_partial |= LoRa.read() << (1 * 8);
 
-    // save data
+        // save data
+        updateBuddy(UUID, lat_partial, lng_partial);
+    }
+}
 
-  }
+
+void sendPacket(BT_Packet packet){
+    LoRa.beginPacket();
+    Lora.write(packet.getPacket());
+    LoRa.endPacket();
+}
+
+
+void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
+
 }

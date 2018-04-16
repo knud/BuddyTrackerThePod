@@ -5,9 +5,9 @@ BT_Packet::BT_Packet(){
     updatePending = false;
 }
 
-void BT_Packet::setGPS(uint8_t lat, uint8_t lng){
-    this.lat = lat;
-    this.lng = lng;
+void BT_Packet::setGPS(uint32_t lat, uint32_t lng){
+    this.lat = (uint8_t)(lat & 0xffffffff);
+    this.lng = (uint8_t)(lng & 0xffffffff);
     updatePending = true;
 }
 
