@@ -82,5 +82,23 @@ void sendPacket(BT_Packet packet){
 
 
 void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
+    uint8_t index = findBuddyIndex(UUID);
+    if(index == -1){
+        Buddy newBuddy = Buddy(UUID);
+        buddies.add(newBuddy);
+        index = buddies.size() - 1;
+    }
+    Buddy currentBuddy = buddies.get(index);
+    currentBuddy.setLat(lat);
+    currentBuddy.setLng(lng);
 
+}
+
+
+// returns -1 if no match
+uint8_t findBuddyIndex(uint16_t UUID){
+    for(uint8_t i = 0; i < buddies.size(); i++){
+        if(UUID == buddies.get(i).getUUID()) return i;
+    }
+    return -1;
 }
