@@ -1,6 +1,11 @@
 #include <Arduino.h>
 #include "Buddy.h"
 
+Buddy::Buddy(){
+    // error/default value
+    this.UUID = 0;
+}
+
 Buddy::Buddy(uint16_t UUID){
     this.UUID = UUID;
 }

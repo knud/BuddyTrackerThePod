@@ -6,11 +6,18 @@
 #include "Buddy.h"
 
 
+void onReceive(int packetSize);
+void sendPacket(BT_Packet packet);
+void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng);
+uint8_t findBuddyIndex(uint16_t UUID);
+
+
 // TODO: define comparator for sorting LinkedList
 LinkedList<Buddy> buddies;
 
-uint32_t myLat = -9999;
-uint32_t myLat = -9999;
+// TOD: change error values
+uint32_t myLat = 9999;
+uint32_t myLng = 9999;
 
 
 void setup() {
@@ -76,18 +83,23 @@ void onReceive(int packetSize) {
 
 void sendPacket(BT_Packet packet){
     LoRa.beginPacket();
-    Lora.write(packet.getPacket());
+    LoRa.write(packet.getPacket());
     LoRa.endPacket();
 }
 
 
+// currently adds unknown buddies
+// shows everyone
 void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
     uint8_t index = findBuddyIndex(UUID);
+    
+    // add unknown buddies
     if(index == -1){
         Buddy newBuddy = Buddy(UUID);
         buddies.add(newBuddy);
         index = buddies.size() - 1;
     }
+
     Buddy currentBuddy = buddies.get(index);
     currentBuddy.setLat(lat);
     currentBuddy.setLng(lng);
@@ -95,10 +107,10 @@ void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
 }
 
 
-// returns -1 if no match
+// returns 0 if no match
 uint8_t findBuddyIndex(uint16_t UUID){
     for(uint8_t i = 0; i < buddies.size(); i++){
         if(UUID == buddies.get(i).getUUID()) return i;
     }
-    return -1;
+    return 0;
 }

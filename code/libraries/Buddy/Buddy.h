@@ -4,6 +4,7 @@
 
 class Buddy {
     public:
+        Buddy();
         Buddy(uint16_t UUID);
         
         uint16_t getUUID(void);
