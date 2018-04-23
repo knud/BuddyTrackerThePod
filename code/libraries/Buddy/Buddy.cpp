@@ -6,7 +6,7 @@ Buddy::Buddy(){
     this->UUID = 0;
 }
 
-Buddy::Buddy(uint16_t UUID){
+Buddy::Buddy(uint64_t UUID){
     this->UUID = UUID;
 }
 

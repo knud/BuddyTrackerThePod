@@ -15,8 +15,8 @@ bool BT_Packet::updatesPending(){
     return updatePending;
 }
 
-uint32_t BT_Packet::getPacket(){
-    uint32_t packet;
+BYTE BT_Packet::getPacket(){
+    BYTE packet[8+2+2];
     packet = UUID << (4 * 8);
     packet &= lat << (2 * 8);
     packet &= lng;

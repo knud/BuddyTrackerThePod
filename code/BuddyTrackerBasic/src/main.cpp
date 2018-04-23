@@ -8,8 +8,8 @@
 
 void onReceive(int packetSize);
 void sendPacket(BT_Packet packet);
-void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng);
-uint8_t findBuddyIndex(uint16_t UUID);
+void updateBuddy(uint64_t UUID, uint16_t lat, uint16_t lng);
+uint8_t findBuddyIndex(uint64_t UUID);
 
 
 // TODO: define comparator for sorting LinkedList
@@ -47,7 +47,7 @@ void onReceive(int packetSize) {
 
     while (LoRa.available()) {
         // read UUID
-        uint16_t UUID = 0;
+        uint64_t UUID = 0;
         UUID |= LoRa.read() << (0 * 8);
         UUID |= LoRa.read() << (1 * 8);
         UUID |= LoRa.read() << (2 * 8);
@@ -56,22 +56,14 @@ void onReceive(int packetSize) {
         UUID |= LoRa.read() << (5 * 8);
         UUID |= LoRa.read() << (6 * 8);
         UUID |= LoRa.read() << (7 * 8);
-        UUID |= LoRa.read() << (8 * 8);
-        UUID |= LoRa.read() << (9 * 8);
-        UUID |= LoRa.read() << (10 * 8);
-        UUID |= LoRa.read() << (11 * 8);
-        UUID |= LoRa.read() << (12 * 8);
-        UUID |= LoRa.read() << (13 * 8);
-        UUID |= LoRa.read() << (14 * 8);
-        UUID |= LoRa.read() << (15 * 8);
 
         // read partial lat
-        uint8_t lat_partial = 0;
+        uint16_t lat_partial = 0;
         lat_partial |= LoRa.read() << (0 * 8);
         lat_partial |= LoRa.read() << (1 * 8);
 
         // read partial lat
-        uint8_t lng_partial = 0;
+        uint16_t lng_partial = 0;
         lng_partial |= LoRa.read() << (0 * 8);
         lng_partial |= LoRa.read() << (1 * 8);
 
@@ -90,7 +82,7 @@ void sendPacket(BT_Packet packet){
 
 // currently adds unknown buddies
 // shows everyone
-void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
+void updateBuddy(uint64_t UUID, uint16_t lat_partial, uint16_t lng_partial){
     uint8_t index = findBuddyIndex(UUID);
     
     // add unknown buddies
@@ -101,14 +93,15 @@ void updateBuddy(uint16_t UUID, uint32_t lat, uint32_t lng){
     }
 
     Buddy currentBuddy = buddies.get(index);
-    currentBuddy.setLat(lat);
-    currentBuddy.setLng(lng);
+    // TODO: make lat and lng complete
+    currentBuddy.setLat(lat_partial);
+    currentBuddy.setLng(lng_partial);
 
 }
 
 
 // returns 0 if no match
-uint8_t findBuddyIndex(uint16_t UUID){
+uint8_t findBuddyIndex(uint64_t UUID){
     for(uint8_t i = 0; i < buddies.size(); i++){
         if(UUID == buddies.get(i).getUUID()) return i;
     }
