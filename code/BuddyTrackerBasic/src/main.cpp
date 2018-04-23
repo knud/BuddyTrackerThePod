@@ -6,7 +6,7 @@
 #include "Buddy.h"
 
 
-void onReceive(int packetSize);
+void onReceive(uint8_t packetSize);
 void sendPacket(BT_Packet packet);
 void updateBuddy(uint64_t UUID, uint16_t lat, uint16_t lng);
 uint8_t findBuddyIndex(uint64_t UUID);
@@ -15,9 +15,9 @@ uint8_t findBuddyIndex(uint64_t UUID);
 // TODO: define comparator for sorting LinkedList
 LinkedList<Buddy> buddies;
 
-// TOD: change error values
-uint32_t myLat = 9999;
-uint32_t myLng = 9999;
+// error value: -1 (unsigned)
+uint32_t myLat = -1;
+uint32_t myLng = -1;
 
 
 void setup() {
@@ -42,7 +42,7 @@ void loop() {
 }
 
 
-void onReceive(int packetSize) {
+void onReceive(uint8_t packetSize) {
     if (packetSize == 0) return; // if there's no packet, return
 
     while (LoRa.available()) {
@@ -92,10 +92,20 @@ void updateBuddy(uint64_t UUID, uint16_t lat_partial, uint16_t lng_partial){
         index = buddies.size() - 1;
     }
 
+    // can't compute other Buddy's location without knowning own location
+    if(myLat == -1 || myLng == -1){
+        return;
+    }
+    // clear LSBs
+    uint32_t lat = myLat & 0x00;
+    uint32_t lng = myLng & 0x00;
+    // replace LSBs
+    lat &= lat_partial;
+    lng &= lng_partial;
+
     Buddy currentBuddy = buddies.get(index);
-    // TODO: make lat and lng complete
-    currentBuddy.setLat(lat_partial);
-    currentBuddy.setLng(lng_partial);
+    currentBuddy.setLat(lat);
+    currentBuddy.setLng(lng);
 
 }
 
