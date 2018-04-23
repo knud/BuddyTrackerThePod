@@ -4,13 +4,15 @@
 
 class BT_Packet {
     public:
-        void setGPS(uint8_t lat, uint8_t lng);
+        BT_Packet();
+        
+        void setGPS(uint32_t lat, uint32_t lng);
         bool updatesPending();
         uint32_t getPacket();
     protected:
         uint16_t UUID;
         uint8_t lat;
-        uint8_t lon;
+        uint8_t lng;
         bool updatePending;
 };
 

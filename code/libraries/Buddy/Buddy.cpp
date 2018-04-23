@@ -3,11 +3,11 @@
 
 Buddy::Buddy(){
     // error/default value
-    this.UUID = 0;
+    this->UUID = 0;
 }
 
 Buddy::Buddy(uint16_t UUID){
-    this.UUID = UUID;
+    this->UUID = UUID;
 }
 
 uint16_t Buddy::getUUID(void){
@@ -23,9 +23,9 @@ uint32_t Buddy::getLng(void){
 }
 
 void Buddy::setLat(uint32_t lat){
-    this.lat = lat;
+    this->lat = lat;
 }
 
 void Buddy::setLng(uint32_t lng){
-    this.lng = lng;
+    this->lng = lng;
 }
