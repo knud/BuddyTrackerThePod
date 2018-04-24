@@ -15,10 +15,14 @@ bool BT_Packet::updatesPending(){
     return updatePending;
 }
 
-BYTE BT_Packet::getPacket(){
-    BYTE packet[8+2+2];
-    packet = UUID << (4 * 8);
-    packet &= lat << (2 * 8);
-    packet &= lng;
+byte *BT_Packet::getPacket(){
+    byte packet[PACKET_LENGTH];
+    for(int i = 0; i < 8; i++){
+        packet[i] = (UUID >> (8 * i)) % 0xff;
+    }
+    packet[9] = lat >> 8;
+    packet[10] = lat % 0xff;
+    packet[11] = lng >> 8;
+    packet[12] = lng % 0xff;
     return packet;
 }

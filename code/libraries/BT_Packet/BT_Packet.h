@@ -2,13 +2,16 @@
 #define BT_PACKET_H
 
 
+#define PACKET_LENGTH 12
+
+
 class BT_Packet {
     public:
         BT_Packet();
         
         void setGPS(uint32_t lat, uint32_t lng);
         bool updatesPending();
-        uint32_t getPacket();
+        byte *getPacket();
     protected:
         uint64_t UUID;
         uint8_t lat;
