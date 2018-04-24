@@ -75,7 +75,10 @@ void onReceive(uint8_t packetSize) {
 
 void sendPacket(BT_Packet packet){
     LoRa.beginPacket();
-    LoRa.write(packet.getPacket());
+    byte *packetContents = packet.getPacket();
+    for(int i = 0; i < PACKET_LENGTH; i++){
+        LoRa.write( *(packetContents + i) );
+    }
     LoRa.endPacket();
 }
 
