@@ -6,6 +6,7 @@
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "files.associations": {
         "unordered_map": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "memory": "cpp"
     }
 }

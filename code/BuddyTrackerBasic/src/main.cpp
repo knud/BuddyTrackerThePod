@@ -13,11 +13,11 @@ uint8_t findBuddyIndex(uint64_t UUID);
 
 
 // TODO: define comparator for sorting LinkedList
-LinkedList<Buddy> buddies;
+LinkedList<Buddy*> buddies;
 
-// error value: -1 (unsigned)
-uint32_t myLat = -1;
-uint32_t myLng = -1;
+const uint32_t LAT_LNG_ERR = -1;
+uint32_t myLat = LAT_LNG_ERR;
+uint32_t myLng = LAT_LNG_ERR;
 
 
 void setup() {
@@ -87,13 +87,13 @@ void updateBuddy(uint64_t UUID, uint16_t lat_partial, uint16_t lng_partial){
     
     // add unknown buddies
     if(index == -1){
-        Buddy newBuddy = Buddy(UUID);
+        Buddy *newBuddy = new Buddy(UUID);
         buddies.add(newBuddy);
         index = buddies.size() - 1;
     }
 
     // can't compute other Buddy's location without knowning own location
-    if(myLat == -1 || myLng == -1){
+    if(myLat == LAT_LNG_ERR || myLng == LAT_LNG_ERR){
         return;
     }
     // clear LSBs
@@ -103,9 +103,9 @@ void updateBuddy(uint64_t UUID, uint16_t lat_partial, uint16_t lng_partial){
     lat &= lat_partial;
     lng &= lng_partial;
 
-    Buddy currentBuddy = buddies.get(index);
-    currentBuddy.setLat(lat);
-    currentBuddy.setLng(lng);
+    Buddy *currentBuddy = buddies.get(index);
+    currentBuddy->setLat(lat);
+    currentBuddy->setLng(lng);
 
 }
 
@@ -113,7 +113,10 @@ void updateBuddy(uint64_t UUID, uint16_t lat_partial, uint16_t lng_partial){
 // returns 0 if no match
 uint8_t findBuddyIndex(uint64_t UUID){
     for(uint8_t i = 0; i < buddies.size(); i++){
-        if(UUID == buddies.get(i).getUUID()) return i;
+        Buddy *currentBuddy = buddies.get(i);
+        if(UUID == currentBuddy->getUUID()){
+            return i;
+        }
     }
     return 0;
 }
