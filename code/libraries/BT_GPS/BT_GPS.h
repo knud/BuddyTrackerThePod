@@ -14,6 +14,8 @@ class BT_GPS {
 
         bool newDataAvailable(void);
         // TODO: add getLat, getLng, etc.
+    protected:
+        Adafruit_GPS *GPS;
 };
 
 #endif

@@ -3,6 +3,8 @@
 #include "BT_GPS.h"
 
 BT_GPS::BT_GPS(void){
+    GPS = new GPS(&GPSSerial);
+    
     // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
     GPS.begin(9600);
     // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude

@@ -20,7 +20,7 @@ class BT_UI {
         void setBuddyLight(uint8_t light);
         void setWaypointLight(uint8_t light);
     protected:
-        Adafruit_Neopixel strip;
+        Adafruit_NeoPixel strip;
         uint8_t stripPin;
         uint32_t buddyColor;
         uint32_t waypointColor;
