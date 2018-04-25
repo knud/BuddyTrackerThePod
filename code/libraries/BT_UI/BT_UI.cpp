@@ -3,7 +3,7 @@
 #include "BT_UI.h"
 
 BT_UI::BT_UI(uint8_t pin){
-    strip = Adafruit_NeoPixel(NUM_PIXELS, pin, NEO_GRBA + NEO_KHZ800);
+    strip = Adafruit_NeoPixel(NUM_PIXELS, pin, NEO_GRBW + NEO_KHZ800);
     
     buddyColor = strip.Color(LED_OFF, LED_OFF, LED_ON);
     waypointColor = strip.Color(LED_ON, LED_OFF, LED_OFF);
@@ -54,7 +54,7 @@ void BT_UI::setWaypointLight(uint8_t light){
 }
 
 uint8_t BT_UI::orientation2LED(float orientation){
-    uint8_t degreesPerLED = fov / STRIP_LENGTH;
+    uint8_t degreesPerLED = fov / NUM_PIXELS;
     uint8_t offsetOrientation = orientation + fov / 2;
 
     if(offsetOrientation > 360){
@@ -65,5 +65,5 @@ uint8_t BT_UI::orientation2LED(float orientation){
         return -1;
     }
 
-    return STRIP_LENGTH - offsetOrientation / degreesPerLED;
+    return NUM_PIXELS - offsetOrientation / degreesPerLED;
 }

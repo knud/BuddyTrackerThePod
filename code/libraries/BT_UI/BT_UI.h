@@ -19,6 +19,7 @@ class BT_UI {
 
         void setBuddyLight(uint8_t light);
         void setWaypointLight(uint8_t light);
+        uint8_t orientation2LED(float orientation);
     protected:
         Adafruit_NeoPixel strip;
         uint8_t stripPin;

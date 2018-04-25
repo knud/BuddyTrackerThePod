@@ -3,7 +3,9 @@
 #include "BT_GPS.h"
 
 BT_GPS::BT_GPS(void){
-    GPS = new GPS(&GPSSerial);
+    Uart GPSSerial (&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
+    
+    Adafruit_GPS GPS(&GPSSerial);
     
     // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
     GPS.begin(9600);
