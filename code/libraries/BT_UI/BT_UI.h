@@ -11,7 +11,7 @@ class BT_UI {
     public:
         BT_UI(uint8_t pin);
 
-        void begin();
+        void begin(void);
         void setBrightness(uint8_t b);
         void test(void);
         void show(void);

@@ -2,7 +2,9 @@
 #include <LinkedList.h>
 #include <LoRa.h>
 #include <SPI.h>
+#include "BT_GPS.h"
 #include "BT_Packet.h"
+#include "BT_UI.h"
 #include "Buddy.h"
 
 
